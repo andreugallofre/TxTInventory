@@ -23,6 +23,8 @@ schema_view = get_swagger_view(title='TxT Inventory API')
 
 router = SimpleRouter()
 router.register("items", views.ListItemView, "items")
+router.register("contacts", views.ListContactView, "contacts")
+router.register("company", views.ListCompanyView, "company")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
