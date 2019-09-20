@@ -10,7 +10,7 @@ from .serializers import ItemSerializer
 class ListItemView(viewsets.ModelViewSet):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
-    
+
 
 class ListCompanyView(viewsets.ModelViewSet):
     queryset = Company.objects.all()
