@@ -7,9 +7,6 @@ class Contact(models.Model):
     email = models.EmailField(max_length=254)
     phone = models.CharField(max_length=50)
 
-    def __str__(self):
-        return self.name
-
 
 class Company(models.Model):
 
@@ -20,9 +17,6 @@ class Company(models.Model):
     contact = models.ForeignKey(Contact,
                                 on_delete=models.CASCADE,
                                 null=True)
-
-    def __str__(self):
-        return self.name
 
 
 class Item(models.Model):
@@ -44,6 +38,3 @@ class Item(models.Model):
                                          related_name='reciever',
                                          on_delete=models.CASCADE,
                                          null=True)
-
-    def __str__(self):
-        return "{} - {}".format(self.name, self.serial_number)

@@ -22,11 +22,12 @@ from rest_framework_swagger.views import get_swagger_view
 schema_view = get_swagger_view(title='TxT Inventory API')
 
 router = SimpleRouter()
-router.register("items", views.ListItemView, "items")
-router.register("contacts", views.ListContactView, "contacts")
-router.register("company", views.ListCompanyView, "company")
+# router.register("items", views.ListItemView, "items")
+# router.register("contacts", views.ContactAPIView, "contacts")
+# router.register("company", views.ListCompanyView, "company")
 
 urlpatterns = [
+    path(r'contacts', views.ContactAPIView.as_view()),
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     path('docs/', schema_view),

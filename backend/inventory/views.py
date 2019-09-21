@@ -1,22 +1,24 @@
 from django.shortcuts import render
 from rest_framework import viewsets
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework_swagger.views import get_swagger_view
 from .models import Item, Company, Contact
-from .serializers import ItemSerializer
+from .serializers import ContactSerializer
 
 # Create your views here.
 
 
-class ListItemView(viewsets.ModelViewSet):
-    queryset = Item.objects.all()
-    serializer_class = ItemSerializer
+class ContactAPIView(APIView):
+    def get(self, request):
+        contacts = Contact.objects.all()
+        return Response({'contacts': contacts})
 
+    def post(self, request):
+        contact = request.data.get('contact')
 
-class ListCompanyView(viewsets.ModelViewSet):
-    queryset = Company.objects.all()
-    serializer_class = ItemSerializer
-
-
-class ListContactView(viewsets.ModelViewSet):
-    queryset = Contact.objects.all()
-    serializer_class = ItemSerializer
+        serializer = ContactSerializer(data=contact)
+        if serializer.is_valid(raise_exception=True):
+            contact_saved = serializer.save()
+        return Response({"success": "Contact '{}' created successfully"
+                        .format(contact_saved.name)})
