@@ -8,7 +8,7 @@ class CompanySerializer(serializers.ModelSerializer):
     contact_set = serializers.PrimaryKeyRelatedField(
         many=True,
         queryset=Contact.objects.all())
-    
+
     id = serializers.ReadOnlyField()
 
     class Meta:
