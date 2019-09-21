@@ -3,16 +3,17 @@ from rest_framework import serializers
 from .models import *
 
 
-class ItemSerializer(serializers.ModelSerializer):
+class CompanySerializer(serializers.ModelSerializer):
 
-    donation_company = serializers.RelatedField(many=False, read_only=True)
-    reciever_company = serializers.RelatedField(many=False, read_only=True)
+    contact = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Contact.objects.all())
+    
+    id = serializers.ReadOnlyField()
 
     class Meta:
-        model = Item
-        fields = ('name', 'serial_number', 'entry_date',
-                  'donation_date', 'reciever_company',
-                  'donation_company')
+        model = Company
+        fields = ('id', 'name', 'tax_id', 'address', 'contact')
 
 
 class ContactSerializer(serializers.ModelSerializer):
@@ -21,15 +22,29 @@ class ContactSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(max_length=254)
     phone = serializers.CharField(max_length=255)
 
+    company = serializers.PrimaryKeyRelatedField(
+        queryset=Company.objects.all()
+    )
+
+    id = serializers.ReadOnlyField()
+
     class Meta:
         model = Contact
-        fields = ('name', 'email', 'phone')
+        fields = ('id', 'name', 'email', 'phone', 'company')
 
 
-class CompanySerializer(serializers.ModelSerializer):
+class ItemSerializer(serializers.ModelSerializer):
 
-    contact = serializers.RelatedField(many=True, read_only=True)
+    donation_company = serializers.RelatedField(
+        many=False,
+        queryset=Company.objects.all())
+    reciever_company = serializers.RelatedField(
+        many=False,
+        queryset=Company.objects.all())
+    id = serializers.ReadOnlyField()
 
     class Meta:
-        model = Company
-        fields = ('name', 'tax_id', 'address', 'contact')
+        model = Item
+        fields = ('id', 'name', 'serial_number', 'entry_date',
+                  'donation_date', 'reciever_company',
+                  'donation_company')

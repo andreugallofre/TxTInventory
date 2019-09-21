@@ -1,24 +1,41 @@
-from django.shortcuts import render
-from rest_framework import viewsets
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework_swagger.views import get_swagger_view
-from .models import Item, Company, Contact
-from .serializers import ContactSerializer
+from rest_framework.mixins import (
+    CreateModelMixin, ListModelMixin, RetrieveModelMixin, UpdateModelMixin
+)
+from rest_framework.viewsets import GenericViewSet
+
+from inventory.models import Contact, Company, Item
+from inventory.serializers import (
+    ContactSerializer,
+    CompanySerializer,
+    ItemSerializer
+)
 
 # Create your views here.
 
 
-class ContactAPIView(APIView):
-    def get(self, request):
-        contacts = Contact.objects.all()
-        return Response({'contacts': contacts})
+class ContactAPIView(GenericViewSet,  # generic view functionality
+                     CreateModelMixin,  # handles POSTs
+                     RetrieveModelMixin,  # handles GETs for 1 Company
+                     ListModelMixin):  # handles GETs for many Companies
 
-    def post(self, request):
-        contact = request.data.get('contact')
+    serializer_class = ContactSerializer
+    queryset = Contact.objects.all()
 
-        serializer = ContactSerializer(data=contact)
-        if serializer.is_valid(raise_exception=True):
-            contact_saved = serializer.save()
-        return Response({"success": "Contact '{}' created successfully"
-                        .format(contact_saved.name)})
+
+class CompanyAPIView(GenericViewSet,  # generic view functionality
+                     CreateModelMixin,  # handles POSTs
+                     RetrieveModelMixin,  # handles GETs for 1 Company
+                     ListModelMixin):
+
+    serializer_class = CompanySerializer
+
+    queryset = Company.objects.all()
+
+
+class ItemsAPIView(GenericViewSet, CreateModelMixin, RetrieveModelMixin,
+                   ListModelMixin):
+
+    serializer_class = ItemSerializer
+
+    queryset = Item.objects.all()

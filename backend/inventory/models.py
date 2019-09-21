@@ -1,22 +1,20 @@
 from django.db import models
 
 
-class Contact(models.Model):
-
-    name = models.CharField(max_length=255)
-    email = models.EmailField(max_length=254)
-    phone = models.CharField(max_length=50)
-
-
 class Company(models.Model):
 
     name = models.CharField(max_length=255, null=False)
     tax_id = models.CharField(max_length=30, null=True)
     address = models.CharField(max_length=512, null=True)
 
-    contact = models.ForeignKey(Contact,
-                                on_delete=models.CASCADE,
-                                null=True)
+
+class Contact(models.Model):
+
+    name = models.CharField(max_length=255)
+    email = models.EmailField(max_length=254)
+    phone = models.CharField(max_length=50)
+
+    company = models.ForeignKey(Company, null=True, on_delete=models.CASCADE)
 
 
 class Item(models.Model):
