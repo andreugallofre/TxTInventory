@@ -5,7 +5,7 @@ from .models import *
 
 class CompanySerializer(serializers.ModelSerializer):
 
-    contact = serializers.PrimaryKeyRelatedField(
+    contact_set = serializers.PrimaryKeyRelatedField(
         many=True,
         queryset=Contact.objects.all())
     
@@ -13,7 +13,7 @@ class CompanySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Company
-        fields = ('id', 'name', 'tax_id', 'address', 'contact')
+        fields = ('id', 'name', 'tax_id', 'address', 'contact_set')
 
 
 class ContactSerializer(serializers.ModelSerializer):
@@ -33,14 +33,27 @@ class ContactSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'email', 'phone', 'company')
 
 
+class CreateItemSerializer(serializers.ModelSerializer):
+
+    donation_company = serializers.PrimaryKeyRelatedField(
+        many=False,
+        queryset=Company.objects.all())
+    reciever_company = serializers.PrimaryKeyRelatedField(
+        many=False,
+        queryset=Company.objects.all())
+
+    class Meta:
+        model = Item
+        fields = ('name', 'serial_number', 'entry_date',
+                  'donation_date', 'reciever_company',
+                  'donation_company')
+
+
 class ItemSerializer(serializers.ModelSerializer):
 
-    donation_company = serializers.RelatedField(
-        many=False,
-        queryset=Company.objects.all())
-    reciever_company = serializers.RelatedField(
-        many=False,
-        queryset=Company.objects.all())
+    donation_company = serializers.StringRelatedField()
+    reciever_company = serializers.StringRelatedField()
+
     id = serializers.ReadOnlyField()
 
     class Meta:

@@ -8,7 +8,8 @@ from inventory.models import Contact, Company, Item
 from inventory.serializers import (
     ContactSerializer,
     CompanySerializer,
-    ItemSerializer
+    ItemSerializer,
+    CreateItemSerializer
 )
 
 # Create your views here.
@@ -36,6 +37,10 @@ class CompanyAPIView(GenericViewSet,  # generic view functionality
 class ItemsAPIView(GenericViewSet, CreateModelMixin, RetrieveModelMixin,
                    ListModelMixin):
 
-    serializer_class = ItemSerializer
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return CreateItemSerializer
+        else:
+            return ItemSerializer
 
     queryset = Item.objects.all()
