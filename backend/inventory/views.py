@@ -15,18 +15,18 @@ from inventory.serializers import (
 # Create your views here.
 
 
-class ContactAPIView(GenericViewSet,  # generic view functionality
-                     CreateModelMixin,  # handles POSTs
-                     RetrieveModelMixin,  # handles GETs for 1 Company
-                     ListModelMixin):  # handles GETs for many Companies
+class ContactAPIView(GenericViewSet,
+                     CreateModelMixin,
+                     RetrieveModelMixin,
+                     ListModelMixin):
 
     serializer_class = ContactSerializer
     queryset = Contact.objects.all()
 
 
-class CompanyAPIView(GenericViewSet,  # generic view functionality
-                     CreateModelMixin,  # handles POSTs
-                     RetrieveModelMixin,  # handles GETs for 1 Company
+class CompanyAPIView(GenericViewSet,
+                     CreateModelMixin,
+                     RetrieveModelMixin,
                      ListModelMixin):
 
     serializer_class = CompanySerializer
