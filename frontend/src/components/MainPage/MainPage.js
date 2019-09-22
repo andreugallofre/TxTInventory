@@ -1,26 +1,115 @@
 import React, {Component} from "react";
-import { Layout, Menu, Icon, Table, Tag, Popconfirm, Divider } from 'antd';
+import { Layout, Menu, Icon, Table, Divider, Button, 
+         Form, Modal, Input, Select} from 'antd';
 import './MainPage.css'
+import ReactDOM from 'react-dom';
 import {BrowserView} from "react-device-detect";
 import api from "../../api/api";
 import 'antd/dist/antd.css'
 
 const { Header, Content, Footer } = Layout;
+const { Option } = Select;
 
+function onChange(value) {
+  console.log(`selected ${value}`);
+}
+
+function onBlur() {
+  console.log('blur');
+}
+
+function onFocus() {
+  console.log('focus');
+}
+
+function onSearch(val) {
+  console.log('search:', val);
+}
+
+const Testing = Form.create({ name: 'form_in_modal' })(
+  // eslint-disable-next-line
+
+  class extends React.Component {
+    
+    constructor(props) {
+      super(props);
+    }
+
+
+    render() {
+      const { visible, onCancel, onCreate, form } = this.props;
+      const { getFieldDecorator } = form;
+      
+      return (
+        <Modal
+          visible={visible}
+          title="Add new item"
+          okText="Create"
+          onCancel={onCancel}
+          onOk={onCreate}
+        >
+          <Form layout="vertical">
+            <Form.Item label="Title">
+              {getFieldDecorator('title', {
+                rules: [{ required: true, message: 'Please input the title of collection!' }],
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="Description">
+              {getFieldDecorator('description')(<Input type="textarea" />)}
+            </Form.Item>
+            <Form.Item className="collection-create-form_last-form-item">
+              {getFieldDecorator('modifier', {
+                initialValue: '',
+              })(
+              <Select showSearchn style={{ width: 200 }} initialValue="Select a person" optionFilterProp="children"
+                onChange={onChange} onFocus={onFocus} onBlur={onBlur} onSearch={onSearch}
+                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 }>
+                <Option value="jack">Jack</Option>
+                <Option value="lucy">Lucy</Option>
+                <Option value="tom">Tom</Option>
+              </Select>,
+              )}
+            </Form.Item>
+          </Form>
+        </Modal>
+      );
+    }
+  },
+)
 
 
 export class MainPage extends Component {
 
   state = {
     items: [],
-  }
+    data: [],
+    companies: [],
+    test: [],
+    visible: false,
+  };
+
+  showModal = () => {
+    this.setState({ visible: true });
+  };
+
+  handleCancel = () => {
+    this.setState({ visible: false });
+  };
+
   componentDidMount() {
     api.get("/items").then(response => response.data)
     .then((data) => {
       this.setState({ items: data })
       console.log(this.state.items)
      })
-}
+
+    api.get("/company").then(response => response.data)
+    .then((data) => {
+      this.setState({ companies: data })
+      console.log(this.state.companies)
+    })
+  
+  }
 
   handleDelete(key) {
     console.log(key);
@@ -75,7 +164,7 @@ export class MainPage extends Component {
           <span>
             <a>Edit</a>
             <Divider type="vertical" />
-            <a>Donate</a>
+            <a>Donate </a>
           </span>
         ),
       },
@@ -94,6 +183,9 @@ export class MainPage extends Component {
                         <Content className="content-style" >
                             <div className="components">
                                 <h1>TxT Inventory</h1>
+                                <Button type="primary" onClick={this.showModal}>
+                                  New Collection
+                                </Button>
                                 <Table rowKey="serial_number" dataSource={this.state.items} columns={this.columns} />
                             </div>
                         </Content>
@@ -102,6 +194,12 @@ export class MainPage extends Component {
                         </Footer>
                     </Layout>
                 </BrowserView>
+                <Testing
+                  wrappedComponentRef={this.saveFormRef}
+                  visible={this.state.visible}
+                  onCancel={this.handleCancel}
+                  onCreate={this.handleCreate}
+                />
             </div>
         )
     }
