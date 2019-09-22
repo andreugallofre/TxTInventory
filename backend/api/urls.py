@@ -15,17 +15,46 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include, re_path
+from django.conf.urls import url
 from rest_framework.routers import SimpleRouter
+from rest_framework import permissions
 from inventory import views
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
 from rest_framework_swagger.views import get_swagger_view
 
-schema_view = get_swagger_view(title='TxT Inventory API')
 
 router = SimpleRouter()
-router.register("items", views.ListItemView, "items")
+router.register("contacts", views.ContactAPIView, "contacts")
+router.register("company", views.CompanyAPIView, "company")
+router.register("items", views.ItemsAPIView, "items")
+
+
+api_patterns = [
+    url(r"^", include(router.urls)),
+]
+
+schema_view = get_schema_view(
+   openapi.Info(
+      title="TxT Inventory API",
+      default_version='v1.0',
+   ),
+   public=True,
+   permission_classes=(permissions.AllowAny,),
+)
+
+api_patterns += [
+   url(r'^swagger(?P<format>\.json|\.yaml)$',
+       schema_view.without_ui(cache_timeout=0), name='schema-json'),
+
+   url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0),
+       name='schema-swagger-ui'),
+
+   url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0),
+       name='schema-redoc'),
+]
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(router.urls)),
-    path('docs/', schema_view),
+    path("api/v1.0/", include((api_patterns, "backend"), namespace="v1.0")),
 ]
