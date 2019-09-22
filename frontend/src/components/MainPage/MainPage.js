@@ -1,22 +1,16 @@
 import React, {Component} from "react";
-import { Layout, Menu, Icon, Table, Divider, Button, 
-         Form, Modal, Input, Select} from 'antd';
+import { Layout, Menu, Icon, Table, Divider, Button } from 'antd';
 import './MainPage.css'
-import ReactDOM from 'react-dom';
 import { CreateItemForm } from './CreateItem/CreateItem.js'
 import {BrowserView} from "react-device-detect";
 import api from "../../api/api";
 import 'antd/dist/antd.css'
 
 const { Header, Content, Footer } = Layout;
-const { Option } = Select;
 export class MainPage extends Component {
 
   state = {
     items: [],
-    data: [],
-    companies: [],
-    test: [],
     visible: false,
   };
 
