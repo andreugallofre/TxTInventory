@@ -33,14 +33,30 @@ const Testing = Form.create({ name: 'form_in_modal' })(
     
     constructor(props) {
       super(props);
+     
+      this.state = {
+        isLoaded: false,
+        companies: null
+      };
+
+
+
     }
 
+    componentDidMount() {
+      api.get("/company").then(response => response.data)
+      .then((data) => {
+        this.setState({ companies: data, isLoaded: true})
+        console.log(this.state.companies)
+      })
+    }
 
     render() {
       const { visible, onCancel, onCreate, form } = this.props;
       const { getFieldDecorator } = form;
+      const { isLoaded, companies } = this.state;
       
-      return (
+      return (isLoaded ?
         <Modal
           visible={visible}
           title="Add new item"
@@ -57,21 +73,20 @@ const Testing = Form.create({ name: 'form_in_modal' })(
             <Form.Item label="Description">
               {getFieldDecorator('description')(<Input type="textarea" />)}
             </Form.Item>
-            <Form.Item className="collection-create-form_last-form-item">
+            <Form.Item label="Donation Company" className="collection-create-form_last-form-item">
               {getFieldDecorator('modifier', {
                 initialValue: '',
               })(
               <Select showSearchn style={{ width: 200 }} initialValue="Select a person" optionFilterProp="children"
                 onChange={onChange} onFocus={onFocus} onBlur={onBlur} onSearch={onSearch}
                 filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 }>
-                <Option value="jack">Jack</Option>
-                <Option value="lucy">Lucy</Option>
-                <Option value="tom">Tom</Option>
+                {companies.map(cmp => (<Option key={cmp.name} value={cmp.name}>{cmp.name}</Option>)) }
               </Select>,
               )}
             </Form.Item>
           </Form>
-        </Modal>
+        </Modal> :
+        <div>Hello world</div> // or whatever loading state you want, could be null 
       );
     }
   },
@@ -102,13 +117,6 @@ export class MainPage extends Component {
       this.setState({ items: data })
       console.log(this.state.items)
      })
-
-    api.get("/company").then(response => response.data)
-    .then((data) => {
-      this.setState({ companies: data })
-      console.log(this.state.companies)
-    })
-  
   }
 
   handleDelete(key) {
