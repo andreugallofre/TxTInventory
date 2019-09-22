@@ -9,6 +9,15 @@
     background-color: #FFFFFF;
 }
 
+h1 {
+    margin: 0;
+    display: inline-block;
+}
+
+.main-menu-btn {
+    float: right;
+}
+
 .header-style {
     position: fixed;
     z-index: 1;

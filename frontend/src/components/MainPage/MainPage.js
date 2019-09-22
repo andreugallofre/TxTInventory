@@ -101,10 +101,7 @@ export class MainPage extends Component {
                         </Header>
                         <Content className="content-style" >
                             <div className="components">
-                                <h1>TxT Inventory</h1>
-                                <Button type="primary" onClick={this.showModal}>
-                                  New Collection
-                                </Button>
+                                <div><h1>TxT Inventory</h1> <Button className="main-menu-btn" icon="plus-circle" type="primary" onClick={this.showModal}>Add</Button></div>
                                 <Table rowKey="serial_number" dataSource={this.state.items} columns={this.columns} />
                             </div>
                         </Content>
