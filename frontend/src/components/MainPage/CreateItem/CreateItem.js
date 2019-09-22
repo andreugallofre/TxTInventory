@@ -70,7 +70,7 @@ export const CreateItemForm = Form.create({ name: 'form_in_modal' })(
                 <Select showSearchn style={{ width: 200 }} initialValue="Select a person" optionFilterProp="children"
                   onChange={onChange} onFocus={onFocus} onBlur={onBlur} onSearch={onSearch}
                   filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 }>
-                  {companies.map(cmp => (<Option key={cmp.name} value={cmp.name}>{cmp.name}</Option>)) }
+                  {companies.map(cmp => (<Option key={cmp.id} value={cmp.id}>{cmp.name}</Option>)) }
                 </Select>,
                 )}
               </Form.Item>
