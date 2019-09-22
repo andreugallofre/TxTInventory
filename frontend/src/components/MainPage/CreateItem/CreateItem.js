@@ -5,19 +5,16 @@ import api from "../../../api/api";
 import 'antd/dist/antd.css'
 
 function onChange(value) {
-console.log(`selected ${value}`);
+    console.log(`selected ${value}`);
 }
-
 function onBlur() {
-console.log('blur');
+    console.log('blur');
 }
-
 function onFocus() {
-console.log('focus');
+    console.log('focus');
 }
-
 function onSearch(val) {
-console.log('search:', val);
+    console.log('search:', val);
 }
 
 const { Option } = Select;
