@@ -81,9 +81,9 @@ export class MainPage extends Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <a>Edit</a>
+            <a href='/'>Edit</a>
             <Divider type="vertical" />
-            <a>Donate </a>
+            <a href='/'>Donate </a>
           </span>
         ),
       },
