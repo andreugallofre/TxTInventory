@@ -76,7 +76,7 @@ export const CreateItemForm = Form.create({ name: 'form_in_modal' })(
               </Form.Item>
             </Form>
           </Modal> :
-          <div>Hello world</div> // or whatever loading state you want, could be null 
+          <div></div>
         );
       }
     },
