@@ -30,22 +30,26 @@ export class MainPage extends Component {
      })
   }
 
-  handleDelete(key) {
-    console.log(key);
-    api.post("/messages/" + key + "/delete/" );
-    api.get("/messages").then(response => response.data)
-    .then((data) => {
-      this.setState({ items: data })
-    })
-  };
-
-  handleResolve(key) {
-    console.log(key);
-    api.post("/messages/" + key + "/resolve/" );
-    api.get("/messages").then(response => response.data)
-    .then((data) => {
-      this.setState({ items: data })
-    })
+  handleCreate = () => {
+    console.log("hellowsito");
+    const form = this.formRef.props.form;
+    form.validateFields((err, values) => {
+        if (err) { return }
+        form.resetFields();
+        console.log(values.donation_date.format("YYYY/MM/DD"));
+        api.post("/items/", { "name": values.name, "serial_number": values.serial_number, "donation_date": values.donation_date.format("YYYY-MM-DD"), "donation_company": values.donator_company }).then( resp => {
+          this.setState({
+              visible: false
+          })
+        }).catch((error) => {
+          console.log(error);
+            if (error.response) {
+                if (error.response.status === 401) {
+                    this.props.history.push("/");
+                }
+            }
+        });
+    });
   };
 
   constructor(props){
@@ -89,6 +93,11 @@ export class MainPage extends Component {
       },
     ];
   }
+
+  saveFormRef = formRef => {
+    this.formRef = formRef;
+  };
+
     render() {
         return (
             <div>

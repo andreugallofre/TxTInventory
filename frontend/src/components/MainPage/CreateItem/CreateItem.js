@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Modal, Input, Select } from 'antd';
+import { Form, Modal, Input, Select, DatePicker } from 'antd';
 import '../MainPage.css'
 import api from "../../../api/api";
 import 'antd/dist/antd.css'
@@ -45,7 +45,9 @@ export const CreateItemForm = Form.create({ name: 'form_in_modal' })(
         const { visible, onCancel, onCreate, form } = this.props;
         const { getFieldDecorator } = form;
         const { isLoaded, companies } = this.state;
-        
+        const config = {
+          rules: [{ type: 'object', required: true, message: 'Please select time!' }],
+        };
         return (isLoaded ?
           <Modal
             visible={visible}
@@ -55,16 +57,23 @@ export const CreateItemForm = Form.create({ name: 'form_in_modal' })(
             onOk={onCreate}
           >
             <Form layout="vertical">
-              <Form.Item label="Title">
-                {getFieldDecorator('title', {
-                  rules: [{ required: true, message: 'Please input the title of collection!' }],
+              <Form.Item label="Name">
+                {getFieldDecorator('name', {
+                  rules: [{ required: true, message: 'Please input the name of collection!' }],
                 })(<Input />)}
               </Form.Item>
-              <Form.Item label="Description">
-                {getFieldDecorator('description')(<Input type="textarea" />)}
+              <Form.Item label="Serial Number">
+                {getFieldDecorator('serial_number', {
+                  rules: [{ required: true, message: 'Please input the serial number of collection!' }],
+                })(<Input />)}
+              </Form.Item>
+              <Form.Item label="DatePicker[showTime]">
+                {getFieldDecorator('donation_date', config)(
+                  <DatePicker showTime format="YYYY/MM/DD" />,
+                )}
               </Form.Item>
               <Form.Item label="Donation Company" className="collection-create-form_last-form-item">
-                {getFieldDecorator('modifier', {
+                {getFieldDecorator('donator_company', {
                   initialValue: '',
                 })(
                 <Select showSearchn style={{ width: 200 }} initialValue="Select a person" optionFilterProp="children"

@@ -38,15 +38,11 @@ class CreateItemSerializer(serializers.ModelSerializer):
     donation_company = serializers.PrimaryKeyRelatedField(
         many=False,
         queryset=Company.objects.all())
-    reciever_company = serializers.PrimaryKeyRelatedField(
-        many=False,
-        queryset=Company.objects.all())
 
     class Meta:
         model = Item
         fields = ('name', 'serial_number', 'entry_date',
-                  'donation_date', 'reciever_company',
-                  'donation_company')
+                  'donation_date', 'donation_company')
 
 
 class ItemSerializer(serializers.ModelSerializer):

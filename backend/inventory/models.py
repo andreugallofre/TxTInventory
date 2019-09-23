@@ -38,4 +38,5 @@ class Item(models.Model):
     reciever_company = models.ForeignKey(Company,
                                          related_name='reciever',
                                          on_delete=models.CASCADE,
-                                         null=True)
+                                         null=True,
+                                         blank=True)
