@@ -13,7 +13,7 @@ export class MainPage extends Component {
   };
   
   toHomePage = () => {
-    this.setState({ home: true, contacts: false, groups: false, profile: false, activity: false, help: false, about: false })
+    this.setState({ home: true })
   };
 
   
