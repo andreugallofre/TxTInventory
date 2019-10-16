@@ -1,6 +1,5 @@
 import React from "react";
 import { Form, Modal, Input, Select } from 'antd';
-import '../MainPage.css'
 import api from "../../../api/api";
 import 'antd/dist/antd.css'
 
@@ -20,19 +19,16 @@ function onSearch(val) {
 const { Option } = Select;
 
 export const CreateItemForm = Form.create({ name: 'form_in_modal' })(
-    // eslint-disable-next-line
-
-    class extends React.Component {
-      
+  class extends React.Component {    
       constructor(props) {
         super(props);
        
         this.state = {
           isLoaded: false,
-          companies: null
+          companies: null,
         };
       }
-  
+
       componentDidMount() {
         api.get("/company").then(response => response.data)
         .then((data) => {
