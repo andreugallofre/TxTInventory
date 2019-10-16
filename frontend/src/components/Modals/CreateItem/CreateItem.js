@@ -30,8 +30,7 @@ export const CreateItemForm = Form.create({ name: 'form_in_modal' })(
       }
 
       componentDidMount() {
-        api.get("/company").then(response => response.data)
-        .then((data) => {
+        api.get("/company").then(response => response.data).then((data) => {
           this.setState({ companies: data, isLoaded: true})
           console.log(this.state.companies)
         })
